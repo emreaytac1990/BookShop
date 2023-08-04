@@ -35,6 +35,7 @@ def create_book():
     if not request.json:
         os.abort(400)
     book = Book(
+        image=request.json.get('image'),
         title=request.json.get('title'),
         author=request.json.get('author'),
         price=request.json.get('price')
@@ -51,8 +52,18 @@ def update_book(isbn):
     book = Book.query.get(isbn)
     if book is None:
         os.abort(404)
+    book.image = request.json.get('image', book.image)
     book.title = request.json.get('title', book.title)
     book.author = request.json.get('author', book.author)
     book.price = request.json.get('price', book.price)
     db.session.commit()
     return jsonify(book.to_json())
+
+@app.route("/book/<int:isbn>", methods=["DELETE"])
+def delete_book(isbn):
+    book = Book.query.get(isbn)
+    if book is None:
+        os.abort(404)
+    db.session.delete(book)
+    db.session.commit()
+    return jsonify({'result': True})
