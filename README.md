@@ -15,8 +15,10 @@ export DEV_DATABASE_URL=sqlite:///books.db
 export FLASK_APP=bookshop.py
 ```
 
-
-Add 
+Add
+```
+pip install flask flask-sqlalchemy PyMySQL
+```
 ```
 flask shell
 ```
